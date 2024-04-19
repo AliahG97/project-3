@@ -40,7 +40,7 @@ const typeDefs = `
     }
 
     type Mutation{
-        updateProduct(_id: ID!, quantity: Int!, price: Float!): Product
+        updateProduct(_id: ID!, quantity: Int!): Product
         addUser(firstName: String!, lastName: String!, email: String!, password: String!): Auth
         login(email: String!, password: String!): Auth
         updateUser(firstName: String, lastName: String, email: String, password: String): User

@@ -68,12 +68,55 @@ const resolvers = {
                 });
 
                 return {session: session.id};
-                
+
             }
 
         }
     },
     Mutation: {
+        updateProduct: async (parent, {_id, quantity }) => {
+            const subtractOne = Math.abs(quantity) * -1;
+
+            return await Product.findByIdAndUpdate(_id, { $inc: {quantity: subtractOne}}, {new: true});
+        },
+        addUser: async (parent, args) => {
+            const user = await User.create(args);
+            const token = signToken(user);
+
+            return {token, user};
+        },
+        login: async (parent, {email, password}) => {
+            const user = await User.findOne({email});
+
+            if(!user){
+                throw AuthenticationError;
+            }
+
+            const token = signToken(user);
+
+            return {token, user};
+
+        },
+        updateUser: async (parent, args, context) => {
+            if(context.user){
+                return await User.findByIdAndUpdate(context.user._id, args, {new: true});
+            }
+
+            throw AuthenticationError;
+
+        },
+        addOrder: async (parent, {products}, context) => {
+            if(context.user){
+                const order = new Order({products});
+
+                await User.findByIdAndUpdate(context.user._id, { $push: {orders: order}});
+
+                return order;
+
+            }
+
+            throw AuthenticationError;
+        }
 
     }
 };
