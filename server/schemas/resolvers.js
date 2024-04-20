@@ -4,6 +4,15 @@ const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
 
 const resolvers = {
     Query: {
+        products: async (parent, {name}) => {
+            const params = {};
+
+            if(name){
+                params.name = { $regex: name};
+            }
+            
+            return await Product.find(params);
+        },
         product: async (parent, {_id}) => {
             return await Product.findById(_id);
         },
@@ -11,7 +20,7 @@ const resolvers = {
             if(context.user){
                 const user = await User.findById(context.user._id).populate({
                     path: 'orders.products'
-                    //populate: ??
+                    //populate: {path: 'products'} 
                 });
 
                 user.orders.sort((a, b) => b.purchaseDate - a.purchaseDate);
@@ -24,8 +33,8 @@ const resolvers = {
         order: async (parent, {_id}, context) => {
             if(context.user){
                 const user = await User.findById(context.user._id).populate({
-                    path:'order.products'
-                    //populate: ??
+                    path:'order.products',
+                    //populate: {path: 'products'} 
                 });
 
                 return user.orders.id(_id);
@@ -39,7 +48,7 @@ const resolvers = {
             const order = new Order({ products: args.products});
             const line_items = [];
 
-            const {products} = await order.populate('products');
+            const {products} = await order.populate('products').execPopulate();
 
             for(let i = 0; i < products.length; i++){
                 const product = await stripe.products.create({
@@ -59,7 +68,7 @@ const resolvers = {
                     quantity: 1
                 });
 
-                const session = await stripe.checkout.sesssions.create({
+                const session = await stripe.checkout.sessions.create({
                     payment_method_types: ['card'],
                     line_items,
                     mode: 'payment',
@@ -89,6 +98,12 @@ const resolvers = {
             const user = await User.findOne({email});
 
             if(!user){
+                throw AuthenticationError;
+            }
+
+            const correctPass = await user.isCorrectPassword(password);
+
+            if(!correctPass){
                 throw AuthenticationError;
             }
 

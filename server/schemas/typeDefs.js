@@ -20,7 +20,7 @@ const typeDefs = `
     type Order{
         _id: ID
         purchaseDate: String
-        products: [Products]
+        products: [Product]
     }
 
     type Checkout{
@@ -33,6 +33,7 @@ const typeDefs = `
     }
 
     type Query{
+        products(name: String): [Product]
         product(_id: ID!): Product
         user: User
         order(_id: ID!): Order
