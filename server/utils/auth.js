@@ -16,7 +16,6 @@ module.exports = {
     // allows token to be sent via  req.query or headers
     let token = req.body.token || req.query.token || req.headers.authorization;
 
-    console.log('Authorization Header:', req.headers.authorization); //TODO: Delete this 
 
     // ["Bearer", "<tokenvalue>"]
     if (req.headers.authorization) {
@@ -31,8 +30,9 @@ module.exports = {
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
-    } catch {
-      console.log('Invalid token'); //TODO: delete this
+    } catch(err) {
+      //console.log(err);  
+      console.log('Invalid Token'); //TODO: review this!
       //return res.status(400).json({ message: 'invalid token!' });
     }
 

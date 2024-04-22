@@ -1,7 +1,11 @@
 const db = require('./connection');
 const {User, Product} = require('../models');
+const cleanDB = require('./cleanDB');
 
 db.once('open', async () => {
+
+    await cleanDB('Product', 'products');
+    await cleanDB('User', 'users');
 
     //Product Seeds
     const products = await Product.insertMany([
