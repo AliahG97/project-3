@@ -45,6 +45,9 @@ const resolvers = {
             throw AuthenticationError;
 
         },
+        // allOrders: async (parent, args, context) => {
+        //     return Order.find({});
+        // },
         checkout: async (parent, args, context) => {
             const url = new URL(context.headers.referer).origin;
             const order = new Order({ products: args.products});
@@ -101,7 +104,7 @@ const resolvers = {
             return {token, user};
         },
         login: async (parent, {email, password}) => {
-            const user = await User.findOne({email});
+            const user = await User.findOne({email})/// TODO: .populate('O');
 
             if(!user){
                 throw AuthenticationError;
@@ -115,7 +118,7 @@ const resolvers = {
 
             const token = signToken(user);
 
-            return {token, user};
+            return {token};
 
         },
         updateUser: async (parent, args, context) => {
