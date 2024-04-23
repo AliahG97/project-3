@@ -15,3 +15,24 @@ h6 {
   font-weight: 300;
   font-style: italic;
 }
+#navbar, div.container-fluid {
+--bs-bg-opacity: 1;
+background-color: pink;
+
+}
+a.nav-link{
+  color:white;
+}
+a.nav-link:hover {
+  color:hotpink;
+
+}
+.btn-success {
+  background-color: hotpink;
+  border-color: white;
+}
+.btn-success:hover {
+  background-color:deeppink;
+}
+
+
