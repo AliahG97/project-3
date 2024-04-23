@@ -50,15 +50,15 @@ const resolvers = {
         // },
         checkout: async (parent, args, context) => {
             const url = new URL(context.headers.referer).origin;
-            const order = new Order({ products: args.products});
+            //const order = new Order({ products: args.products});
+            const products = await Product.find({ _id: { $in: args.products }});
             const line_items = [];
 
-            await order.populate('products').execPopulate();
-
-            const products = order.products; 
-
-            for(let i = 0; i < products.length; i++){
-                const product = products[i];
+            //await order.populate('products').execPopulate();
+            //const products = order.products; 
+            for(const product of products){
+            //for(let i = 0; i < products.length; i++){
+                //const product = products[i];
 
                 const stripeProduct = await stripe.products.create({
                     name: product.name,
