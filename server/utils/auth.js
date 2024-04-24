@@ -21,7 +21,7 @@ module.exports = {
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
-
+    // - to show user token => console.log('token: ', token);
     if (!token) {
       return req ; //res.status(400).json({ message: 'You have no token!' });
     }
@@ -29,18 +29,19 @@ module.exports = {
     // verify token and get user data out of it
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
+      // - to show user info => console.log('data', data);
       req.user = data;
     } catch(err) {
       //console.log(err);  
-      console.log('Invalid Token'); //TODO: review this!
+      console.log('Invalid Token: ', err); //TODO: review this!
       //return res.status(400).json({ message: 'invalid token!' });
     }
 
     // send to next endpoint
     return req; //next();
   },
-  signToken: function ({ username, email, _id }) {
-    const payload = { username, email, _id };
+  signToken: function ({ username, email, _id, firstName, lastName }) {
+    const payload = { username, email, _id, firstName, lastName };
 
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },

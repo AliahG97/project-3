@@ -29,7 +29,7 @@ const typeDefs = `
 
     type Auth{
         token: ID
-        user: User
+        #user: User
     }
 
     type Query{
@@ -37,6 +37,7 @@ const typeDefs = `
         product(_id: ID!): Product
         user: User
         order(_id: ID!): Order
+        #allOrders: [Order]
         checkout(products: [ID]!): Checkout
     }
 
