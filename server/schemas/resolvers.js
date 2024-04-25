@@ -45,17 +45,16 @@ const resolvers = {
             throw AuthenticationError;
 
         },
+        // allOrders: async (parent, args, context) => {
+        //     return Order.find({});
+        // },
         checkout: async (parent, args, context) => {
             const url = new URL(context.headers.referer).origin;
-            const order = new Order({ products: args.products});
+            //const order = new Order({ products: args.products});
+            const products = await Product.find({ _id: { $in: args.products }});
             const line_items = [];
 
-            await order.populate('products').execPopulate();
-
-            const products = order.products; 
-
-            for(let i = 0; i < products.length; i++){
-                const product = products[i];
+            for(const product of products){
 
                 const stripeProduct = await stripe.products.create({
                     name: product.name,
@@ -101,7 +100,7 @@ const resolvers = {
             return {token, user};
         },
         login: async (parent, {email, password}) => {
-            const user = await User.findOne({email});
+            const user = await User.findOne({email})/// TODO: .populate('O');
 
             if(!user){
                 throw AuthenticationError;
@@ -115,7 +114,7 @@ const resolvers = {
 
             const token = signToken(user);
 
-            return {token, user};
+            return {token};
 
         },
         updateUser: async (parent, args, context) => {
