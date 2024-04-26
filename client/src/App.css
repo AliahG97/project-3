@@ -43,9 +43,19 @@ a.navbar-brand{
 }
 div.container-fluid a{
   color:black;
-  
-
 }
+
+div.container-fluid a:hover{
+  color:deeppink;
+}
+.hello{
+  color:black
+}
+
+.hello:hover{
+  color:black
+}
+
 
 
 /* .aliah-container {

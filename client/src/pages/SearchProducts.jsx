@@ -9,25 +9,25 @@ import {
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
-import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
+import { saveProductIds } from '../utils/localStorage';
 
-const SearchBooks = () => {
+const SearchProducts = () => {
+  //return <h1>it is working...</h1>
   // create state for holding returned google api data
-  const [searchedBooks, setSearchedBooks] = useState([]);
+  const [searchedProducts, setSearchedProducts] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
 
-  // create state to hold saved bookId values
-  const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+  // create state to hold favorite productId values
+  const [favoriteProductsIds, setfavoriteProductsIds] = useState(getfavoriteProductsIds());
 
-  // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
+  // set up useEffect hook to save `favoriteProductIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
-    return () => saveBookIds(savedBookIds);
+    return () => saveProductIds(favoriteProductsIds);
   });
 
-  // create method to search for books and set state on form submit
+  // create method to search for products and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -36,7 +36,7 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchGoogleBooks(searchInput);
+      const response = await searchGoogleProducts(searchInput);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -44,25 +44,25 @@ const SearchBooks = () => {
 
       const { items } = await response.json();
 
-      const bookData = items.map((book) => ({
-        bookId: book.id,
-        authors: book.volumeInfo.authors || ['No author to display'],
-        title: book.volumeInfo.title,
-        description: book.volumeInfo.description,
-        image: book.volumeInfo.imageLinks?.thumbnail || '',
+      const ProductData = items.map((product) => ({
+        productId: product.id,
+        name: product.name,
+        description: product.description,
+        image: product.imageLinks?.thumbnail || '',
+        price:product.price
       }));
 
-      setSearchedBooks(bookData);
+      setSearchProducts(productData);
       setSearchInput('');
     } catch (err) {
       console.error(err);
     }
   };
 
-  // create function to handle saving a book to our database
-  const handleSaveBook = async (bookId) => {
-    // find the book in `searchedBooks` state by the matching id
-    const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
+  // create function to handle saving a product to our database
+  const handleSaveProduct = async (productId) => {
+    // find the product in `searchedProducts` state by the matching id
+    const productToSave = searchedProducts.find((product) => product.productId === productId);
 
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -72,14 +72,14 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      const response = await saveProduct(ProductToSave, token);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
 
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      // if product successfully saves to user's account, save product id to state
+      setFavoriteProductIds([...favoriteProductIds, ProductToSave.productId]);
     } catch (err) {
       console.error(err);
     }
@@ -114,30 +114,29 @@ const SearchBooks = () => {
 
       <Container>
         <h2 className='pt-5'>
-          {searchedBooks.length
-            ? `Viewing ${searchedBooks.length} results:`
+          {searchedProducts.length
+            ? `Viewing ${searchedProducts.length} results:`
             : 'Search for a product to begin'}
         </h2>
         <Row>
-          {searchedBooks.map((book) => {
+          {searchedProducts.map((product) => {
             return (
-              <Col md="4" key={book.bookId}>
+              <Col md="4" key={product.productId}>
                 <Card border='dark'>
-                  {book.image ? (
-                    <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
+                  {product.image ? (
+                    <Card.Img src={product.image} alt={`The cover for ${product.name}`} variant='top' />
                   ) : null}
                   <Card.Body>
-                    <Card.Title>{book.title}</Card.Title>
-                    <p className='small'>Authors: {book.authors}</p>
-                    <Card.Text>{book.description}</Card.Text>
+                    <Card.Title>{product.name}</Card.Title>
+                    <Card.Text>{product.description} {product.price}</Card.Text>
                     {Auth.loggedIn() && (
                       <Button
-                        disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
+                        disabled={favoriteProductIds?.some((favoriteProductId) => favoriteProductId === product.productId)}
                         className='btn-block btn-info'
-                        onClick={() => handleSaveBook(book.bookId)}>
-                        {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)
-                          ? 'This book has already been saved!'
-                          : 'Save this Book!'}
+                        onClick={() => handleSaveProduct(product.productId)}>
+                        {favoriteProductIds?.some((favoriteProductId) => favoriteProductId === product.productId)
+                          ? 'This product has already been saved!'
+                          : 'Save this product!'}
                       </Button>
                     )}
                   </Card.Body>
@@ -151,4 +150,4 @@ const SearchBooks = () => {
   );
 };
 
-export default SearchBooks;
+export default SearchProducts;

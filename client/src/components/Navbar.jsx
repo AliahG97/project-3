@@ -17,18 +17,12 @@ const AppNavbar = () => {
       <Navbar bg='dark' variant='dark' expand='lg' className='aliah-nav'>
         <Container fluid>
           <Navbar.Brand as={Link} to='/' color="black">
-            Music E-Store Product Search 
+            <h4>Music E-Store</h4> 
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
           
             <Nav className='ml-auto d-flex'>
-            { 
-              Auth.loggedIn() &&
-              <Nav.Link>
-                <span>Hello {userProfile?.data?.firstName}</span>
-              </Nav.Link>
-            }
             <Nav.Link as={Link} to='/'>
                 Home
               </Nav.Link> 
@@ -42,14 +36,20 @@ const AppNavbar = () => {
               {/* if user is logged in show saved books and logout */}
               {Auth.loggedIn() ? (
                 <>                 
-                  <Nav.Link as={Link} to='/saved'>
-                    See Your products
+                  <Nav.Link as={Link} to='/favorites'>
+                    Favorites
                   </Nav.Link>
                   <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
                 </>
               ) : (
                 <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
               )}
+              { 
+                Auth.loggedIn() &&
+                <Nav.Link>
+                  <span><h5 className="hello">Hello</h5> {userProfile?.data?.firstName}</span>
+                </Nav.Link>
+              }
             </Nav>
           </Navbar.Collapse>
           
