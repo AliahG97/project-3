@@ -23,7 +23,7 @@ const FavoriteProducts = () => {
     console.log('userData: ', data);
     
 
-    return <h1>REMOVE THIS CODE</h1>;
+    return <h1>PUT THE USER QUERY DATA HERE</h1>;
   // create function that accepts the products's mongo _id value as param and deletes the product from the database
   const handleDeleteProduct= async (productId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
