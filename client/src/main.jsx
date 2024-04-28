@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import App from './App.jsx';
-import SearchProducts from './pages/FavoriteProducts.jsx';
+import SearchProducts from './pages/SearchProducts.jsx';
 import FavoriteProducts from './pages/FavoriteProducts.jsx';
 
 const router = createBrowserRouter([
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
         element: <SearchProducts />
       }
       ,{
-        path: '/saved',
+        path: '/favorites',
         element: <FavoriteProducts />
       }
     ]

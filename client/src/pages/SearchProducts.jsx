@@ -19,7 +19,7 @@ const SearchProducts = () => {
   const [searchInput, setSearchInput] = useState('');
 
   // create state to hold favorite productId values
-  const [favoriteProductsIds, setfavoriteProductsIds] = useState(getfavoriteProductsIds());
+  const [favoriteProductsIds, setfavoriteProductsIds] = useState();
 
   // set up useEffect hook to save `favoriteProductIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -36,12 +36,6 @@ const SearchProducts = () => {
     }
 
     try {
-      const response = await searchGoogleProducts(searchInput);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
       const { items } = await response.json();
 
       const ProductData = items.map((product) => ({
