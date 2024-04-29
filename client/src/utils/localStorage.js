@@ -1,30 +1,30 @@
-export const getSavedBookIds = () => {
-  const savedBookIds = localStorage.getItem('saved_books')
-    ? JSON.parse(localStorage.getItem('saved_books'))
+export const getFavoriteProductIds = () => {
+  const FavoriteProductIds = localStorage.getItem('favorite_products')
+    ? JSON.parse(localStorage.getItem('favorite_products'))
     : [];
 
-  return savedBookIds;
+  return favoriteProductIds;
 };
 
-export const saveBookIds = (bookIdArr) => {
-  if (bookIdArr.length) {
-    localStorage.setItem('saved_books', JSON.stringify(bookIdArr));
+export const saveProductIds = (productIdArr) => {
+  if (productIdArr.length) {
+    localStorage.setItem('favorite_products', JSON.stringify(productIdArr));
   } else {
-    localStorage.removeItem('saved_books');
+    localStorage.removeItem('favorite_products');
   }
 };
 
-export const removeBookId = (bookId) => {
-  const savedBookIds = localStorage.getItem('saved_books')
-    ? JSON.parse(localStorage.getItem('saved_books'))
+export const removeProductId = (productId) => {
+  const favoriteProductIds = localStorage.getItem('favorite_products')
+    ? JSON.parse(localStorage.getItem('favorite_products'))
     : null;
 
-  if (!savedBookIds) {
+  if (!favoriteProductIds) {
     return false;
   }
 
-  const updatedSavedBookIds = savedBookIds?.filter((savedBookId) => savedBookId !== bookId);
-  localStorage.setItem('saved_books', JSON.stringify(updatedSavedBookIds));
+  const updatedFavoriteProductIdsIds = favoriteProductIdsIds?.filter((favoriteProductIdsId) => favoriteProductIdsId !== productId);
+  localStorage.setItem('favorite_products', JSON.stringify(updatedFavoriteProductIds));
 
   return true;
 };
