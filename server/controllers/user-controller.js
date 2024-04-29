@@ -1,5 +1,7 @@
+import { Query } from 'mongoose';
+
 // import user model
-const { User } = require('../models');
+const { User, Product } = require('../models');
 // import sign token function from auth
 const { signToken } = require('../utils/auth');
 
