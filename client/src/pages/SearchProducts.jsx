@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import {
   Container,
   Col,
@@ -10,13 +11,16 @@ import {
 
 import Auth from '../utils/auth';
 import { saveProductIds } from '../utils/localStorage';
+import { QUERY_SEARCH_PRODUCTS } from '../utils/queries';
 
 const SearchProducts = () => {
   //return <h1>it is working...</h1>
   // create state for holding returned google api data
-  const [searchedProducts, setSearchedProducts] = useState([]);
+  // const [searchedProducts, setSearchedProducts] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
+  const [queryProducts, {loading, data}] = useLazyQuery(QUERY_SEARCH_PRODUCTS);
+  console.log('data: ', data);
 
   // create state to hold favorite productId values
   const [favoriteProductsIds, setfavoriteProductsIds] = useState();
@@ -25,7 +29,7 @@ const SearchProducts = () => {
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
     return () => saveProductIds(favoriteProductsIds);
-  });
+  }, []);
 
   // create method to search for products and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -34,19 +38,19 @@ const SearchProducts = () => {
     if (!searchInput) {
       return false;
     }
-
     try {
-      const { items } = await response.json();
+      queryProducts({variables: {name: searchInput}});
+      // const { items } = await response.json();
 
-      const ProductData = items.map((product) => ({
-        productId: product.id,
-        name: product.name,
-        description: product.description,
-        image: product.imageLinks?.thumbnail || '',
-        price:product.price
-      }));
+      // const ProductData = items.map((product) => ({
+      //   productId: product.id,
+      //   name: product.name,
+      //   description: product.description,
+      //   image: product.imageLinks?.thumbnail || '',
+      //   price:product.price
+      // }));
 
-      setSearchProducts(productData);
+      // setSearchProducts(productData);
       setSearchInput('');
     } catch (err) {
       console.error(err);
@@ -79,6 +83,9 @@ const SearchProducts = () => {
     }
   };
 
+
+  if(loading) return <p>Loading...</p>;
+
   return (
     <>
       <div className="text-light bg-dark p-5">
@@ -108,17 +115,17 @@ const SearchProducts = () => {
 
       <Container>
         <h2 className='pt-5'>
-          {searchedProducts.length
-            ? `Viewing ${searchedProducts.length} results:`
+          {data?.products?.length
+            ? `Viewing ${data.products.length} results:`
             : 'Search for a product to begin'}
         </h2>
         <Row>
-          {searchedProducts.map((product) => {
+          {data?.products?.map((product, index) => {
             return (
-              <Col md="4" key={product.productId}>
+              <Col md="4" key={'prod-' + index}>
                 <Card border='dark'>
                   {product.image ? (
-                    <Card.Img src={product.image} alt={`The cover for ${product.name}`} variant='top' />
+                    <Card.Img src={product?.image?.replace('/client/public', '')} alt={`The cover for ${product.name}`} variant='top' />
                   ) : null}
                   <Card.Body>
                     <Card.Title>{product.name}</Card.Title>

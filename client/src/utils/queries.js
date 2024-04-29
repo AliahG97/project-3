@@ -22,3 +22,14 @@ query Query {
       }
     }
   }`;
+
+export const QUERY_SEARCH_PRODUCTS = gql`query Query($name: String) {
+  products(name: $name) {
+    name
+    _id
+    description
+    image
+    price
+    quantity
+  }
+}`;
