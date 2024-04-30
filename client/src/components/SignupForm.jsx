@@ -11,7 +11,7 @@ const SignupForm = () => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-  const [createUser, {error, loading}] = useMutation(MUTATION_CREATE_USER);
+  const [createUser, {error, loading, data}] = useMutation(MUTATION_CREATE_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -29,16 +29,18 @@ const SignupForm = () => {
     }
 
     try {
-      // TODO: fix this, pass the correct variables...
+      console.log('userFormData', userFormData);
+      userFormData.firstName = 'Fake FirstName';
+      userFormData.lastName = 'Fake LastName';
+      delete userFormData.username;
+      
+      
       const response = await createUser({
         variables: userFormData});
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
+      console.log('response: ', response);
+      const token = response.data.addUser.token;
+    
+      
       Auth.login(token);
     } catch (err) {
       console.error(err);
