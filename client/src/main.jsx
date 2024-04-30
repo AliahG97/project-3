@@ -1,23 +1,24 @@
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import App from './App.jsx'
-import SearchBooks from './pages/SearchBooks'
-import SavedBooks from './pages/SavedBooks'
+import App from './App.jsx';
+import SearchProducts from './pages/SearchProducts.jsx';
+import FavoriteProducts from './pages/FavoriteProducts.jsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <h1 className='display-2'>Wrong page!</h1>,
+   errorElement: <h1 className='display-2'>Wrong page!</h1>,
     children: [
       {
         index: true,
-        element: <SearchBooks />
-      }, {
-        path: '/saved',
-        element: <SavedBooks />
+        element: <SearchProducts />
+      }
+      ,{
+        path: '/favorites',
+        element: <FavoriteProducts />
       }
     ]
   }

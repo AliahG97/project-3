@@ -15,3 +15,52 @@ h6 {
   font-weight: 300;
   font-style: italic;
 }
+#navbar, div.container-fluid {
+--bs-bg-opacity: 1;
+background-color: pink;
+
+}
+a.nav-link{
+  color:black;
+}
+a.nav-link:hover {
+  color:hotpink;
+
+}
+a.navbar-brand{
+  color-scheme:black !important;
+}
+.btn-success {
+  background-color: hotpink;
+  border-color: white;
+}
+.btn-success:hover {
+  background-color:deeppink;
+}
+
+.aliah-nav {
+  background-color: pink !important;
+}
+div.container-fluid a{
+  color:black;
+}
+
+div.container-fluid a:hover{
+  color:deeppink;
+}
+.hello{
+  color:black
+}
+
+.hello:hover{
+  color:black
+}
+
+
+
+/* .aliah-container {
+  background-color: yellow !important;
+  border: 2px solid orange;
+  padding: 10px;
+  margin: 10px;
+} */
