@@ -8,7 +8,7 @@ const resolvers = {
             const params = {};
 
             if(name){
-                params.name = { $regex: name};
+                params.name = { $regex: new RegExp("^" + name.toLowerCase(), "i") };
             }
             
             return await Product.find(params);
