@@ -1,8 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_USER_DATA = gql`
-
-query Query {
+  {
     user {
       _id
       firstName
@@ -33,3 +32,38 @@ export const QUERY_SEARCH_PRODUCTS = gql`query Query($name: String) {
     quantity
   }
 }`;
+
+export const QUERY_ORDERS = gql`{
+  query getUser (id: ID) {
+    user(_id: id) {
+      _id
+      firstName
+      lastName
+      orders {
+        _id
+        purchaseDate
+        products {
+          _id
+          name
+          description
+          image
+          quantity
+          price
+        }
+      }
+  }
+}`
+export const QUERY_ONE_ORDER = gql`{
+  order {
+    _id
+    purchaseDate
+    products {
+      _id
+      name
+      description
+      image
+      quantity
+      price
+    }
+  }
+}`

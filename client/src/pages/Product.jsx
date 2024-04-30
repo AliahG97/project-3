@@ -1,4 +1,5 @@
-import { ProductHeader, ProductBody } from "../components/Product/Card";
+import ProductHeader from "../components/Product/Card/ProductHeader";
+import ProductBody from "../components/Product/Card/ProductBody";
 import {
   Container,
   Card,

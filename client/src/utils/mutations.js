@@ -12,3 +12,4 @@ export const MUTATION_LOGIN = gql`mutation Mutation($email: String!, $password: 
       token
     }
   }`;
+

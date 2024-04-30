@@ -1,4 +1,5 @@
-import { OrderHeader, OrderBody } from '../components/Order/Card';
+import OrderHeader from '../components/Order/Card/OrderHeader';
+import OrderBody from '../components/Order/Card/OrderBody';
 import {
   Container,
   Card,
@@ -11,10 +12,9 @@ import {
 // import Auth from '../utils/auth';
 // import { useState, useEffect } from 'react';
 // import { useQuery } from '@apollo/client';
-// import { QUERY_ORDER, QUERY_ME } from '../utils/queries';
+import { QUERY_ONE_ORDER } from '../utils/queries';
 
 const Order = (orderData) => {
- 
   return (
   <>
     <div className="text-light bg-dark p-5">

@@ -1,5 +1,6 @@
-import { OrderHeader } from "../components/Order/Card";
-import { UserInformation } from "../components/UserInformation";
+import OrderHeader from "../components/Order/Card/OrderHeader";
+import OrderBody from "../components/Order/Card/OrderBody";
+import UserInformation from "../components/UserInformation";
 import {
   Container,
   Button,
@@ -7,35 +8,45 @@ import {
   Col
 } from 'react-bootstrap';
 import { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { GET_ORDER } from '../../utils/mutations';
-import { Auth } from "../utils/auth";
+import { useQuery } from '@apollo/client';
+import { QUERY_ONE_ORDER, QUERY_ORDERS, QUERY_USER_DATA } from '../utils/queries';
+import Auth from '../utils/auth';
+
+// import { AuthService } from "../utils/auth";
 
 const Profile = () => {
 
-  const [formState, setFormState] = useState({
-    _id: '',
-  });
-  const [getOrder, { error, data }] = useMutation(GET_ORDER);
+  const userData = Auth.getProfile();
+  
+  if (!userData) {
+    throw new Error('something went wrong!');
+  }
 
-  const handleOrderChange = async (event) => {
-    event.preventDefault();
-    console.log(formState);
+  const { user } = useQuery(QUERY_USER_DATA);
+  console.log('user: ', user);
 
-    try {
-     const response = await getOrder(event.id);
+  // const [getOneOrder, { error, data }] = useQuery(QUERY_ONE_ORDER);
+  // const [getOrders] = useQuery(QUERY_ORDERS);
 
-     if (!response.ok) {
-      throw new Error('something went wrong!');
-     }
+  // const handleOrderChange = async (event) => {
+  //   event.preventDefault();
+  //   console.log(formState);
 
-     const { token, user } = await response.json();
-     console.log(user);
-     Auth.login(token);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //   try {
+  //   //  const response = await getOneOrder(event.id);
+
+  //   //  if (!response.ok) {
+  //   //   throw new Error('something went wrong!');
+  //   //  }
+  //   console.log('success');
+
+  //    const { token, user } = await response.json();
+  //    console.log(user);
+  //   //  AuthService.login(token);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <>
@@ -45,15 +56,14 @@ const Profile = () => {
         <UserInformation key={user}/>
       </Row>
       <Col xs="4" m="3">
-      {user.orders.map(( order) => (
-        <Button 
-        onClick={handleOrderChange}>
+      {user.orders.map(( order ) => (
+        <Button>
         <OrderHeader key={order}/>
         </Button>
       ))}
       </Col>
       <Col xs="8" m="9">
-
+      <OrderBody key={user.orders}/>
       </Col>
       </Container>
     </div>
