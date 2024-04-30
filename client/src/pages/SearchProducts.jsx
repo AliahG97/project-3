@@ -23,7 +23,7 @@ const SearchProducts = () => {
   console.log('data: ', data);
 
   // create state to hold favorite productId values
-  const [favoriteProductsIds, setfavoriteProductsIds] = useState();
+  const [favoriteProductsIds, setfavoriteProductsIds] = useState([]);
 
   // set up useEffect hook to save `favoriteProductIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -132,10 +132,10 @@ const SearchProducts = () => {
                     <Card.Text>{product.description} {product.price}</Card.Text>
                     {Auth.loggedIn() && (
                       <Button
-                        disabled={favoriteProductIds?.some((favoriteProductId) => favoriteProductId === product.productId)}
+                        disabled={favoriteProductsIds?.some((favoriteProductId) => favoriteProductId === product.productId)}
                         className='btn-block btn-info'
                         onClick={() => handleSaveProduct(product.productId)}>
-                        {favoriteProductIds?.some((favoriteProductId) => favoriteProductId === product.productId)
+                        {favoriteProductsIds?.some((favoriteProductId) => favoriteProductId === product.productId)
                           ? 'This product has already been saved!'
                           : 'Save this product!'}
                       </Button>
