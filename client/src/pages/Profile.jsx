@@ -16,13 +16,14 @@ import Auth from '../utils/auth';
 
 const Profile = () => {
 
-  const userData = Auth.getProfile();
+  const userData = Auth.loggedIn();
   
   if (!userData) {
     throw new Error('something went wrong!');
   }
 
-  const user = useQuery(QUERY_USER_DATA);
+  const { data } = useQuery(QUERY_USER_DATA);
+  const user = data.user; 
   console.log('user: ', user);
 
   // const [getOneOrder, { error, data }] = useQuery(QUERY_ONE_ORDER);
@@ -48,26 +49,29 @@ const Profile = () => {
   //   }
   // };
 
-  const orders = (user) => {
-    if (!user.orders) {
+  const orders = (orders) => {
+    if (!orders) {
       <Row>
         <p>No Previous Orders!</p>
       </Row>
     } else {
-    user.orders.map((order, index) => {
+    orders.map((order, index) => {
       <div key={index}>
         <Button onClick={null}>
           <OrderHeader key={order}/>
         </Button>
       </div>
     })
-  };
+  }
 };
 
   return (
     <>
     <div className="text-light bg-dark p-5">
     <Container>
+      <Row className="profileHeader">
+        <h2>Profile</h2>        
+      </Row>
       <Row>
         <UserInformation key={user}/>
       </Row>

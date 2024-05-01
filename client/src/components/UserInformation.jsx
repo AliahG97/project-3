@@ -13,7 +13,7 @@ const UserInformation = (user) => {
   return (
     <>
     <Row>
-      {user.name}
+      <p>{user.firstName + user.lastName}</p>
       <p>Previous Order Count: {orderCount(user.orders)}</p>
     </Row>
     </>

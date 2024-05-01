@@ -13,3 +13,34 @@ export const MUTATION_LOGIN = gql`mutation Mutation($email: String!, $password: 
     }
   }`;
 
+  export const MUTATION_CHECKOUT = gql`
+  mutation addOrder($products: [ID]!) {
+    addOrder(products: $products) {
+      purchaseDate
+      products {
+        _id
+        name
+        description
+        image
+        quantity
+        price
+      }
+    }
+  }
+`;
+
+export const MUTATION_ADD_TO_CART = gql`
+mutation addToCart($user: User!, $product: ID!) {
+  user (_id: $user) {
+    shoppingcart (products: $product) {
+      products {
+        _id
+        name
+        description
+        image
+        quantity
+        price
+      }
+    }
+  }
+}`

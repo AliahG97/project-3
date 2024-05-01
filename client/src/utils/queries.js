@@ -19,6 +19,16 @@ query Query {
         price
       }
     }
+    shoppingcart {
+      products {
+        _id
+        name
+        description
+        image
+        quantity
+        price
+      }
+    }
   }
 }`;
 
@@ -32,6 +42,22 @@ products(name: $name) {
   quantity
 }
 }`;
+
+export const QUERY_CART = gql`{
+  user {
+    _id
+    shoppingCart {
+      products {
+        name
+        _id
+        description
+        image
+        price
+        quantity
+      }
+    }
+  }
+}`
 
 // export const QUERY_ORDERS = gql`{
 //     user {

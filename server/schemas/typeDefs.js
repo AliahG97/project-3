@@ -15,6 +15,7 @@ const typeDefs = `
         lastName: String
         email: String
         orders: [Order]
+        shoppingcart: [ShoppingCart]
     }
 
     type Order{
@@ -52,6 +53,7 @@ const typeDefs = `
         login(email: String!, password: String!): Auth
         updateUser(firstName: String, lastName: String, email: String, password: String): User
         addOrder(products: [ID]!): Order
+        addToCart(_id: ID!, product: [ID]!): ShoppingCart
     }
 
 `;
