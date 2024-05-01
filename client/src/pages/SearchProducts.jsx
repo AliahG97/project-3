@@ -22,6 +22,10 @@ const SearchProducts = () => {
   const [queryProducts, {loading, data}] = useLazyQuery(QUERY_SEARCH_PRODUCTS);
   console.log('data: ', data);
 
+  if(data){
+    saveProductIds(data.products)
+  }
+
   // create state to hold favorite productId values
   const [favoriteProductsIds, setfavoriteProductsIds] = useState([]);
 
@@ -34,7 +38,7 @@ const SearchProducts = () => {
   // create method to search for products and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
+    console.log("inHandleFormSubmit")
     if (!searchInput) {
       return false;
     }
@@ -59,9 +63,10 @@ const SearchProducts = () => {
 
   // create function to handle saving a product to our database
   const handleSaveProduct = async (productId) => {
+    console.log('hello')
     // find the product in `searchedProducts` state by the matching id
-    const productToSave = searchedProducts.find((product) => product.productId === productId);
-
+    const productToSave = searchProducts.find((product) => product.productId === productId);
+    console.log(searchProducts)
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -129,7 +134,7 @@ const SearchProducts = () => {
                   ) : null}
                   <Card.Body>
                     <Card.Title>{product.name}</Card.Title>
-                    <Card.Text>{product.description} {product.price}</Card.Text>
+                    <Card.Text>{product.description} ${product.price}</Card.Text>
                     {Auth.loggedIn() && (
                       <Button
                         disabled={favoriteProductsIds?.some((favoriteProductId) => favoriteProductId === product.productId)}

@@ -11,19 +11,21 @@ import {
 
 import Auth from '../utils/auth';
 import { removeProductId } from '../utils/localStorage';
+import { json } from 'react-router-dom';
 
 const FavoriteProducts = () => {
   ///return <h1>Favorite Products Component Works.</h1>
   //const [userData, setUserData] = useState({});
-
+  const [favorites, setFavorites] = useState(JSON.parse(localStorage.getItem("favorite_products")))
+console.log(favorites)
   // use this to determine if `useEffect()` hook needs to run again
   
 
-  const {loading, data} = useQuery(QUERY_USER_DATA);
-    console.log('userData: ', data);
+  // const {loading, data} = useQuery(QUERY_USER_DATA);
+  //   console.log('userData: ', data);
     
 
-    return <h1>PUT THE USER QUERY DATA HERE</h1>;
+  
   // create function that accepts the products's mongo _id value as param and deletes the product from the database
   const handleDeleteProduct= async (productId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -48,11 +50,11 @@ const FavoriteProducts = () => {
     }
   };
 
-  if(!data || data.user) return <h2>No User Data</h2>
+  // if(!data || data.user) return <h2>No User Data</h2>
   // if data isn't here yet, say so
-  if (loading) {
-    return <h2>LOADING...</h2>;
-  }
+  // if (loading) {
+  //   return <h2>LOADING...</h2>;
+  // }
 
   return (
     <>
@@ -63,16 +65,17 @@ const FavoriteProducts = () => {
       </div>
       <Container>
         <h2 className='pt-5'>
-          {data.user?.favoriteProducts?.length
-            ? `Viewing ${data.user.favoriteProducts.length} favorite ${data.user.favoriteProducts.length === 1 ? 'product' : 'products'}:`
+          
+          {favorites?.length
+            ? `Viewing ${favorites.length} favorite ${favorites.length === 1 ? 'product' : 'products'}:`
             : 'You have no favorite products!'}
         </h2>
         <Row>
-          {data.user.favoriteProducts.map((product) => {
+          {favorites.map((product) => {
             return (
               <Col md="4">
                 <Card key={product.productId} border='dark'>
-                  {product.image ? <Card.Img src={product.image} alt={`The cover for ${product.title}`} variant='top' /> : null}
+                  {product.image ? <Card.Img src={product?.image?.replace('/client/public', '')} alt={`The cover for ${product.title}`} variant='top' /> : null}
                   <Card.Body>
                     <Card.Title>{product.title}</Card.Title>
                     <Card.Text>{product.description}</Card.Text>

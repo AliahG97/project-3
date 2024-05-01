@@ -7,11 +7,11 @@ export const getFavoriteProductIds = () => {
 };
 
 export const saveProductIds = (productIdArr) => {
+  console.log("in the function of save")
+  console.log(productIdArr)
   if (productIdArr.length) {
     localStorage.setItem('favorite_products', JSON.stringify(productIdArr));
-  } else {
-    localStorage.removeItem('favorite_products');
-  }
+  } 
 };
 
 export const removeProductId = (productId) => {

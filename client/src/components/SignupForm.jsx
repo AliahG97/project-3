@@ -11,7 +11,6 @@ const SignupForm = () => {
   const [validated, setValidated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-  const [createUser] = useMutation(MUTATION_CREATE_USER); //removed LOGIN
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -32,13 +31,7 @@ const SignupForm = () => {
     setValidated(true);
 
     try {
-      const {data} = await createUser({ //Changed this to data  PLUS Removed alot of console logs - AB
-        variables: {...userFormData}
-      })
-      
-      
-      const token = data.addUser.token;
-      //console.log(user);
+
       Auth.login(token);
     } catch (err) {
       console.error(err);
