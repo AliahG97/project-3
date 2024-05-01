@@ -76,7 +76,7 @@ const Profile = () => {
         <UserInformation key={user}/>
       </Row>
       <Col xs="4" m="3">
-      {orders(user)}
+      {orders(user.orders)}
       </Col>
       <Col xs="8" m="9">
       <OrderBody key={user.orders}/>
