@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-import {MUTATION_CREATE_USER, MUTATION_LOGIN} from '../utils/mutations';
+import {MUTATION_CREATE_USER} from '../utils/mutations';
 import Auth from '../utils/auth';
 import {useMutation} from '@apollo/client';
 
 const SignupForm = () => {
   // set initial form state
-  const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+  const [userFormData, setUserFormData] = useState({ firstName: '', lastName:'', email: '', password: '' });
   // set state for form validation
-  const [validated] = useState(false);
+  const [validated, setValidated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-  const [createUser, {error, loading, data}] = useMutation(MUTATION_CREATE_USER);
+  const [createUser] = useMutation(MUTATION_CREATE_USER); //removed LOGIN
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -24,23 +24,21 @@ const SignupForm = () => {
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
+      //event.preventDefault();
       event.stopPropagation();
+      setValidated(true);
+      return;
     }
+    setValidated(true);
 
     try {
-      console.log('userFormData', userFormData);
-      userFormData.firstName = 'Fake FirstName';
-      userFormData.lastName = 'Fake LastName';
-      delete userFormData.username;
+      const {data} = await createUser({ //Changed this to data  PLUS Removed alot of console logs - AB
+        variables: {...userFormData}
+      })
       
       
-      const response = await createUser({
-        variables: userFormData});
-      console.log('response: ', response);
-      const token = response.data.addUser.token;
-    
-      
+      const token = data.addUser.token;
+      //console.log(user);
       Auth.login(token);
     } catch (err) {
       console.error(err);
@@ -48,7 +46,8 @@ const SignupForm = () => {
     }
 
     setUserFormData({
-      username: '',
+      firstName: '',
+      lastName:'',
       email: '',
       password: '',
     });
@@ -64,16 +63,29 @@ const SignupForm = () => {
         </Alert>
 
         <Form.Group className='mb-3'>
-          <Form.Label htmlFor='username'>Username</Form.Label>
+          <Form.Label htmlFor='firstName'>First Name</Form.Label>
           <Form.Control
             type='text'
-            placeholder='Your username'
-            name='username'
+            placeholder='Your First Name'
+            name='firstName'
             onChange={handleInputChange}
-            value={userFormData.username}
+            value={userFormData.firstName}
             required
           />
-          <Form.Control.Feedback type='invalid'>Username is required!</Form.Control.Feedback>
+          <Form.Control.Feedback type='invalid'>First Name is required!</Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group className='mb-3'>
+          <Form.Label htmlFor='lastName'>Last Name</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Your Last Name'
+            name='lastName'
+            onChange={handleInputChange}
+            value={userFormData.lastName}
+            required
+          />
+          <Form.Control.Feedback type='invalid'>lastName is required!</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className='mb-3'>
@@ -102,7 +114,7 @@ const SignupForm = () => {
           <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
         </Form.Group>
         <Button
-          disabled={!(userFormData.username && userFormData.email && userFormData.password)}
+          disabled={!(userFormData.firstName && userFormData.lastName && userFormData.email && userFormData.password)}
           type='submit'
           variant='success'>
           Submit
