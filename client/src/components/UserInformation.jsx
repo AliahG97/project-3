@@ -1,12 +1,20 @@
 import { Row } from 'react-bootstrap';
 
-const UserInformation = () => {
+const UserInformation = (user) => {
+
+  const orderCount = (orders) => {
+    if (!orders) {
+      return ('0');
+    } else {
+      return (orders.length);
+    }
+  };
 
   return (
     <>
     <Row>
       {user.name}
-      <p>Previous Order Count: {user.orders.length}</p>
+      <p>Previous Order Count: {orderCount(user.orders)}</p>
     </Row>
     </>
   )

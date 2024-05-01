@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap';
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { QUERY_ONE_ORDER, QUERY_ORDERS, QUERY_USER_DATA } from '../utils/queries';
+import { QUERY_USER_DATA } from '../utils/queries';
 import Auth from '../utils/auth';
 
 // import { AuthService } from "../utils/auth";
@@ -22,7 +22,7 @@ const Profile = () => {
     throw new Error('something went wrong!');
   }
 
-  const { user } = useQuery(QUERY_USER_DATA);
+  const user = useQuery(QUERY_USER_DATA);
   console.log('user: ', user);
 
   // const [getOneOrder, { error, data }] = useQuery(QUERY_ONE_ORDER);
@@ -48,6 +48,22 @@ const Profile = () => {
   //   }
   // };
 
+  const orders = (user) => {
+    if (!user.orders) {
+      <Row>
+        <p>No Previous Orders!</p>
+      </Row>
+    } else {
+    user.orders.map((order, index) => {
+      <div key={index}>
+        <Button onClick={null}>
+          <OrderHeader key={order}/>
+        </Button>
+      </div>
+    })
+  };
+};
+
   return (
     <>
     <div className="text-light bg-dark p-5">
@@ -56,11 +72,7 @@ const Profile = () => {
         <UserInformation key={user}/>
       </Row>
       <Col xs="4" m="3">
-      {user.orders.map(( order ) => (
-        <Button>
-        <OrderHeader key={order}/>
-        </Button>
-      ))}
+      {orders(user)}
       </Col>
       <Col xs="8" m="9">
       <OrderBody key={user.orders}/>

@@ -1,4 +1,3 @@
-import OrderHeader from "../components/Order/Card/OrderHeader";
 import OrderBody from "../components/Order/Card/OrderBody";
 import {
   Container,
@@ -6,28 +5,15 @@ import {
   Row,
   Col
 } from 'react-bootstrap';
-import { useQuery } from '@apollo/client';
-import { QUERY_ONE_ORDER } from "../utils/queries";
 
-const ShoppingCart = () => {
-
-  const { data } = useQuery(QUERY_ONE_ORDER);
-  let order;
-
-  if (data) {
-    order = data.user;
-  }
-
+const ShoppingCart = (cart) => {
   return (
 <>
 <div className="text-light bg-dark p-5">
   <Container>
     <Row>
-      <OrderHeader key={order}/>
-    </Row>
-    <Row>
       <Col>
-      <OrderBody key={order}/>
+      <OrderBody key={cart}/>
       </Col>
     </Row>
   </Container>

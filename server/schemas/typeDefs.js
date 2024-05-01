@@ -23,6 +23,10 @@ const typeDefs = `
         products: [Product]
     }
 
+    type ShoppingCart{
+        products: [Product]
+    }
+
     type Checkout{
         session: ID
     }
@@ -39,6 +43,7 @@ const typeDefs = `
         order(_id: ID!): Order
         #allOrders: [Order]
         checkout(products: [ID]!): Checkout
+        shoppingCart(products: [ID]!): ShoppingCart
     }
 
     type Mutation{

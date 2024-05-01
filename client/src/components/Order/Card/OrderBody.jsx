@@ -4,26 +4,29 @@ import { Link } from "react-router-dom";
 
 export default function OrderBody(order) {
 
-  const {
-    _id,
-    purchaseDate,
-    products
-  } = order
+  const checkProducts = (order) => {
+    if (!order.products) {
+      return (<p>No Products Found</p>);
+    } else {
+      return (
+        order.products.map((product) => {
+          <ListItem key={product}>
+            <ProductHeader key={product}/>
+          <Link
+          to={`/product/${product._id}`}
+          className="badge bg-primary rouded-pill">
+            View Product
+          </Link>
+          </ListItem>
+        })
+      )
+    }
+  }
 
   return (
     <div className="Order-Body">
       <ul className="Product-List">
-        {products.map((product) => (
-          <ListItem key={product.name}>
-            <ProductHeader key={product}/>
-            <Link
-            to={`/product/${product._id}`}
-            className="badge bg-primary rounded-pill"
-            >
-              View Product
-            </Link>
-          </ListItem>
-        ))}
+        {checkProducts(order)}
       </ul>
       <section className="Order-Total">
         {/* <p>Order Total: {order.total}</p> */}

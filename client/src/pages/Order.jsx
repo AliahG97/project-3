@@ -12,7 +12,7 @@ import {
 // import Auth from '../utils/auth';
 // import { useState, useEffect } from 'react';
 // import { useQuery } from '@apollo/client';
-import { QUERY_ONE_ORDER } from '../utils/queries';
+// import { QUERY_ONE_ORDER } from '../utils/queries';
 
 const Order = (orderData) => {
   return (
