@@ -30,11 +30,11 @@ a.nav-link:hover {
 a.navbar-brand{
   color-scheme:black !important;
 }
-.btn-success {
+.btn-success, .btn-info,.nav-pills .nav-link.active {
   background-color: hotpink;
   border-color: white;
 }
-.btn-success:hover {
+.btn-success:hover, .btn-info:hover {
   background-color:deeppink;
 }
 

@@ -134,7 +134,7 @@ const SearchProducts = () => {
                   ) : null}
                   <Card.Body>
                     <Card.Title>{product.name}</Card.Title>
-                    <Card.Text>{product.description} {product.price}</Card.Text>
+                    <Card.Text>{product.description} ${product.price}</Card.Text>
                     {Auth.loggedIn() && (
                       <Button
                         disabled={favoriteProductsIds?.some((favoriteProductId) => favoriteProductId === product.productId)}
