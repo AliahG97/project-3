@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-import {MUTATION_CREATE_USER, MUTATION_LOGIN} from '../utils/mutations';
+import {MUTATION_CREATE_USER} from '../utils/mutations';
 import Auth from '../utils/auth';
 import {useMutation} from '@apollo/client';
 
@@ -8,10 +8,9 @@ const SignupForm = () => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ firstName: '', lastName:'', email: '', password: '' });
   // set state for form validation
-  const [validated] = useState(false);
+  const [validated, setValidated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-  const [createUser, {error, loading, data}] = useMutation(MUTATION_CREATE_USER, MUTATION_LOGIN);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -24,25 +23,15 @@ const SignupForm = () => {
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
+      //event.preventDefault();
       event.stopPropagation();
+      setValidated(true);
+      return;
     }
+    setValidated(true);
 
     try {
-      console.log('userFormData', userFormData);
-      userFormData.firstName = '';
-      userFormData.lastName = '';
-      delete userFormData.username;
-      //return;
 
-      // TODO: fix this, pass the correct variables...
-      const response = await createUser({
-        variables: userFormData});
-      console.log('response: ', response);
-      const token = response.data.addUser.token;
-    
-
-      console.log(user);
       Auth.login(token);
     } catch (err) {
       console.error(err);
