@@ -75,7 +75,7 @@ console.log(favorites)
             return (
               <Col md="4">
                 <Card key={product.productId} border='dark'>
-                  {product.image ? <Card.Img src={product.image} alt={`The cover for ${product.title}`} variant='top' /> : null}
+                  {product.image ? <Card.Img src={product?.image?.replace('/client/public', '')} alt={`The cover for ${product.title}`} variant='top' /> : null}
                   <Card.Body>
                     <Card.Title>{product.title}</Card.Title>
                     <Card.Text>{product.description}</Card.Text>
