@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function OrderBody(order) {
 
   const checkProducts = (order) => {
-    if (!order.products) {
+    if (order) {
       return (<p>No Products Found</p>);
     } else {
       return (

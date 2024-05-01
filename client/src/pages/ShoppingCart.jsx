@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from "@apollo/client";
 import OrderBody from "../components/Order/Card/OrderBody";
 import {
@@ -11,13 +12,17 @@ import { QUERY_CART, QUERY_USER_DATA } from "../utils/queries";
 
 const ShoppingCart = () => {
   const [checkout] = useMutation(MUTATION_CHECKOUT);
-  const { data } = useQuery(QUERY_USER_DATA);
-  let user;
+  const { data, loading, error } = useQuery(QUERY_USER_DATA);
+  const [ user, setUser ] = useState(null); //set initial user state as null
 
-  if (data) {
-    user = data.user;
-    console.log('user: ', user);
-  }
+  useEffect(() => {
+    if (data) {
+      setUser(data.user); //Update user state when available
+      console.log('user: ', user)
+    }
+  }, [data]);
+
+  
 
   const handleCheckout = async (event) => {
     event.preventDefault();
@@ -25,7 +30,7 @@ const ShoppingCart = () => {
     try {
     const response = await checkout({
       variables: {
-        products: data.shoppingCart.products
+        products: user.shoppingCart.products
       },
     });
     console.log('response:', response)
@@ -38,6 +43,9 @@ const ShoppingCart = () => {
 
 };
 
+if (loading) return <p>Loading...</p>;
+if (error) return <p>Error: {error.message}</p>;
+
   return (
 <>
 <div className="text-light bg-dark p-5">
@@ -46,9 +54,7 @@ const ShoppingCart = () => {
     <h2 className="cartHeader">Shopping Cart</h2>
     </Row>
     <Row>
-      <Col>
-      <OrderBody key={user.shoppingCart}/>
-      </Col>
+      { user && user.shoppingCart && <OrderBody key={user.orders}/>}
     </Row>
     <Row>
       <Button
