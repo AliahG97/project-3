@@ -46,6 +46,9 @@ const AppNavbar = () => {
                   <span><h5 className="hello">Hello</h5> {userProfile?.data?.firstName}</span>
                 </Nav.Link>
               }
+              <Nav.Link as={Link} to='/shoppingcart'>
+                Shopping Cart
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
           

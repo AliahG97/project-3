@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import {
   Container,
   Col,
   Form,
   Button,
   Card,
-  Row
+  Row,
+  Alert
 } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
 import { saveProductIds } from '../utils/localStorage';
 import { QUERY_SEARCH_PRODUCTS } from '../utils/queries';
+import { MUTATION_ADD_TO_CART } from '../utils/mutations';
 
 const SearchProducts = () => {
   //return <h1>it is working...</h1>
@@ -75,7 +77,7 @@ const SearchProducts = () => {
     }
 
     try {
-      const response = await saveProduct(ProductToSave, token);
+      const response = await saveProduct(productToSave, token);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -87,6 +89,32 @@ const SearchProducts = () => {
       console.error(err);
     }
   };
+  const SaveToCart = async (event) => {
+    event.preventDefault();    
+
+    const [addToCart] = useMutation(MUTATION_ADD_TO_CART);
+
+    
+    // get token
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const response = await addToCart(token.user, event.target);
+
+      if (!response.ok) {
+        throw new Error('something went wrong!');
+      }
+
+      return( new Alert('Product Added to Cart!'));
+    
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
 
   if(loading) return <p>Loading...</p>;
@@ -144,7 +172,12 @@ const SearchProducts = () => {
                           ? 'This product has already been saved!'
                           : 'Save this product!'}
                       </Button>
-                    )}
+                      
+                    )
+                    }
+                    <Button onClick={SaveToCart}>
+                        Add to Cart
+                      </Button>
                   </Card.Body>
                 </Card>
               </Col>

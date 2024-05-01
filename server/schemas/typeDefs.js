@@ -15,11 +15,16 @@ const typeDefs = `
         lastName: String
         email: String
         orders: [Order]
+        shoppingcart: [ShoppingCart]
     }
 
     type Order{
         _id: ID
         purchaseDate: String
+        products: [Product]
+    }
+
+    type ShoppingCart{
         products: [Product]
     }
 
@@ -39,6 +44,7 @@ const typeDefs = `
         order(_id: ID!): Order
         #allOrders: [Order]
         checkout(products: [ID]!): Checkout
+        shoppingCart(products: [ID]!): ShoppingCart
     }
 
     type Mutation{
@@ -47,6 +53,7 @@ const typeDefs = `
         login(email: String!, password: String!): Auth
         updateUser(firstName: String, lastName: String, email: String, password: String): User
         addOrder(products: [ID]!): Order
+        addToCart(_id: ID!, product: [ID]!): ShoppingCart
     }
 
 `;

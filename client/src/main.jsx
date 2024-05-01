@@ -5,6 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App.jsx';
 import SearchProducts from './pages/SearchProducts.jsx';
 import FavoriteProducts from './pages/FavoriteProducts.jsx';
+import Order from './pages/Order.jsx';
+import Product from './pages/Product.jsx';
+import Profile from './pages/Profile.jsx';
+import ShoppingCart from './pages/ShoppingCart.jsx'; 
 
 const router = createBrowserRouter([
   {
@@ -19,6 +23,22 @@ const router = createBrowserRouter([
       ,{
         path: '/favorites',
         element: <FavoriteProducts />
+      },
+      {
+        path: '/profile',
+        element: <Profile />
+      },
+      {
+        path: '/shoppingcart',
+        element: <ShoppingCart />
+      },
+      {
+        path: '/profile/order/:orderId',
+        element: <Order />
+      },
+      {
+        path: '/product/:productId',
+        element: <Product />
       }
     ]
   }
