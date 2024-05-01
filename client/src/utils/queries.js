@@ -46,48 +46,15 @@ products(name: $name) {
 export const QUERY_CART = gql`{
   user {
     _id
-    shoppingCart {
+    shoppingcart {
       products {
         name
         _id
         description
         image
-        price
         quantity
+        price
       }
     }
   }
 }`
-
-// export const QUERY_ORDERS = gql`{
-//     user {
-//       _id
-//       firstName
-//       lastName
-//       orders {
-//         _id
-//         purchaseDate
-//         products {
-//           _id
-//           name
-//           description
-//           image
-//           quantity
-//           price
-//         }
-//       }
-//   }`
-// export const QUERY_ONE_ORDER = gql`{
-//   order {
-//     _id
-//     purchaseDate
-//     products {
-//       _id
-//       name
-//       description
-//       image
-//       quantity
-//       price
-//     }
-//   }
-// }`

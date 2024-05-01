@@ -5,32 +5,33 @@ import {
   Container,
   Button,
   Row,
-  Col
 } from 'react-bootstrap';
 import { MUTATION_CHECKOUT } from "../utils/mutations";
-import { QUERY_CART, QUERY_USER_DATA } from "../utils/queries";
+import { QUERY_CART } from "../utils/queries";
 
 const ShoppingCart = () => {
   const [checkout] = useMutation(MUTATION_CHECKOUT);
-  const { data, loading, error } = useQuery(QUERY_USER_DATA);
+  const { data, loading, error } = useQuery(QUERY_CART);
   const [ user, setUser ] = useState(null); //set initial user state as null
 
   useEffect(() => {
-    if (data) {
+    if (data && data.user) {
       setUser(data.user); //Update user state when available
       console.log('user: ', user)
     }
   }, [data]);
 
-  
-
   const handleCheckout = async (event) => {
     event.preventDefault();
 
     try {
+      if (!user || !user.shoppingcart || !user.shoppingcart.products) {
+        throw new Error('User or shopping cart data is missing');
+      }
+
     const response = await checkout({
       variables: {
-        products: user.shoppingCart.products
+        products: user.shoppingcart.products
       },
     });
     console.log('response:', response)
@@ -38,9 +39,8 @@ const ShoppingCart = () => {
       throw new Error('something went wrong!');
     }
   } catch (error) {
-    throw new Error(error);
+    console.error('Error during checkout:', error);
   }
-
 };
 
 if (loading) return <p>Loading...</p>;
@@ -54,7 +54,7 @@ if (error) return <p>Error: {error.message}</p>;
     <h2 className="cartHeader">Shopping Cart</h2>
     </Row>
     <Row>
-      { user && user.shoppingCart && <OrderBody key={user.orders}/>}
+      { user && user.shoppingcart && <OrderBody key={user.shoppingcart}/>}
     </Row>
     <Row>
       <Button
